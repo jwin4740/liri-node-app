@@ -1,0 +1,33 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "homework 10 liri ",
+  "main": "liri.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwin4740/liri-node-app.git"
+  },
+  "keywords": [
+    "twitter",
+    "spotify",
+    "request",
+    "liri",
+    "siri",
+    "node"
+  ],
+  "author": "James J Winkle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwin4740/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/jwin4740/liri-node-app#readme",
+  "dependencies": {
+    "request": "^2.79.0",
+    "require": "^2.4.20",
+    "spotify": "^0.3.0",
+    "twitter": "^1.7.0"
+  }
+}
