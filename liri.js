@@ -44,16 +44,27 @@
 // * if no song is provided then your program will default to
 //     * "The Sign" by Ace of Base
 spotifyCommand();
+
 function spotifyCommand() {
     var spotify = require('spotify');
-    var song = process.argv[2];
+    var song = process.argv[3];
+    if (process.argv[3] === null)
+    {
+    	song = "the sign ace of base";
+    }
 
     spotify.search({ type: 'track', query: song }, function(err, data) {
         if (err) {
             console.log('Error occurred: ' + err);
             return;
         } else {
-            console.log(data.tracks.items[0].album.artists[0].external_urls.spotify);
+
+            console.log("---------------------------------");
+            console.log("ARTIST NAME: " + data.tracks.items[0].album.artists[0].name);
+            console.log("SONG NAME: " + data.tracks.items[0].name);
+            console.log("SONG PREVIEW URL: " + data.tracks.items[0].preview_url);
+                  console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
+
             // console.log(data.tracks.items[0].artists.external_urls);
             // console.log(data.tracks.items[0].artists);
         }
