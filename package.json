@@ -25,7 +25,9 @@
   },
   "homepage": "https://github.com/jwin4740/liri-node-app#readme",
   "dependencies": {
+    "fs": "0.0.1-security",
     "moviedb": "^0.2.7",
+    "omdb": "^0.7.0",
     "request": "^2.79.0",
     "require": "^2.4.20",
     "spotify": "^0.3.0",
