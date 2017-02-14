@@ -33,25 +33,55 @@
 // });
 
 
-// node liri.js spotify-this-song '<song name here>'
-// * This will show the following information about the song in your terminal/bash window
-//     * Artist(s)
-//     * The song's name
-//     * A preview link of the song from Spotify
-//     * The album that the song is from
 
-// * if no song is provided then your program will default to
-//     * "The Sign" by Ace of Base
 
-var spotify = require('spotify');
-var song = process.argv[2];
+// var spotify = require('spotify');
+// var song = process.argv[2];
  
-spotify.search({ type: 'track', query: song }, function(err, data) {
-    if ( err ) {
-        console.log('Error occurred: ' + err);
-        return;
-    }
-    else {
-        console.log(JSON.stringify(data, null, 2));
-    }
+// spotify.search({ type: 'track', query: song }, function(err, data) {
+//     if ( err ) {
+//         console.log('Error occurred: ' + err);
+//         return;
+//     }
+//     else {
+//         console.log(JSON.stringify(data, null, 2));
+//     }
+// });
+
+// node liri.js movie-this '<movie name here>'
+// * This will output the following information to your terminal/bash window:
+
+//     * Title of the movie.
+//     * Year the movie came out.
+//     * IMDB Rating of the movie.
+//     * Country where the movie was produced.
+//     * Language of the movie.
+//     * Plot of the movie.
+//     * Actors in the movie.
+//     * Rotten Tomatoes Rating.
+//     * Rotten Tomatoes URL.
+
+// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+//     * If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
+//     * It's on Netflix!
+
+var movieDb = require('moviedb')('e2ed728c3fe73289f9fa629969bcf3a1');
+var userQuery = process.argv[2];
+
+// use moviedb API instead
+
+movieDb.searchMovie({query: userQuery }, function(err, res){
+  console.log(res);
 });
+
+
+
+  * Title of the movie.
+    * Year the movie came out.
+    * IMDB Rating of the movie.
+    * Country where the movie was produced.
+    * Language of the movie.
+    * Plot of the movie.
+    * Actors in the movie.
+    * Rotten Tomatoes Rating.
+    * Rotten Tomatoes URL.
