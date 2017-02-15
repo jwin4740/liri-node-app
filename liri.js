@@ -53,13 +53,13 @@ function readRandom() {
     fs.readFile("random.txt", "utf8", function(error, data) {
         // the first parameter is always an error which gets sets to null if there is no error
         // We will then print the contents of data
-        
+
 
         // Then split it by commas (to make it more readable)
         var dataArr = data.split(",");
 
         // We will then re-display the content as an array for later use.
-        var randNum = Math.floor(Math.random()*10 + 1);
+        var randNum = Math.floor(Math.random() * 10 + 1);
         var randSong = dataArr[randNum];
         spotifyCommand(randSong);
 
@@ -117,25 +117,42 @@ function spotifyCommand(song) {
 // * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
 //     * If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
 //     * It's on Netflix!
+if (argumentTwo === "movie-this") {
+    getMovieInfo(argumentThree);
 
-// var movieDb = require('moviedb')('e2ed728c3fe73289f9fa629969bcf3a1');
-// var userQuery = process.argv[2];
+}
 
-// use moviedb API instead
+function getMovieInfo(movie) {
 
-// movieDb.searchMovie({ query: userQuery }, function(err, res) {
-//     console.log(res.results[0]);
-//     console.log(res.results[0].original_title);
-//     console.log("------------------------");
-//     console.log(res.results[0].overview);
-//     // console.log(JSON.stringify(res, null, 2));
-// });
+    var movieDb = require('moviedb')('e2ed728c3fe73289f9fa629969bcf3a1');
 
-// movieDb.movieSimilar({ query: userQuery, tomatoes: true }, function(err, res) {
-//     console.log(res);
 
-//     // console.log(JSON.stringify(res, null, 2));
-// });
+
+
+    movieDb.searchMovie({ query: movie }, function(err, res) {
+
+        console.log("------------------------");
+        console.log("\n" + res.results[0].original_title + "\n");
+        console.log("RELEASE DATE: " + res.results[0].release_date);
+        console.log("RATING: " + res.results[0].vote_average);
+        console.log("PLOT SUMMARY: " + res.results[0].overview);
+        // console.log(JSON.stringify(res, null, 2));
+    });
+
+
+}
+// if (argumentTwo === "movie-this") {
+//     movieThis(argumentThree);
+// }
+
+// function movieThis(title) {
+//     // get movie by title 
+//     var movie = require('node-movie');
+//     movie(title, function(err, data) {
+//         console.log(data);
+//     });
+// }
+
 
 // /discover/movie?primary_release_year=2010&sort_by=vote_average.desc
 
