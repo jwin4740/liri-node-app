@@ -20,21 +20,25 @@ if (argumentTwo === "my-tweets") {
 
     var twitterObj = require("./keys.js");
     var Twitter = require('twitter');
-    console.log("\n----------------------------------------");
-    console.log("hello world");
+    console.log("\n\n");
+   
+
     var twitterCreds = twitterObj.twitterKeys;
 
     var client = new Twitter(twitterCreds);
 
-    var recentTweets = process.argv[2];
+    var recentTweets = argumentTwo;
     var params = { screen_name: 'jwin4740' };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
-        console.log(response);
+        // console.log(tweets);
+        // console.log(JSON.stringify(response));
         if (!error) {
             var numTweets = tweets[0].user.statuses_count;
-            console.log(response);
-            for (var i = 0; i < numTweets; i++) {
-                console.log("Tweet " + i + ": " + tweets[i].text);
+
+            for (var i = 19; i >= 0; i--) {
+                console.log("TWEET: " + tweets[i].text + "\n(created at " + tweets[i].created_at + ")");
+                console.log("------------------------------------------------------------------------------------------------------------\n");
+
             }
         }
     });
@@ -129,13 +133,21 @@ function getMovieInfo(movie) {
 
 
 
-    movieDb.searchMovie({ query: movie }, function(err, res) {
+    // movieDb.searchMovie({ query: movie }, function(err, res) {
+    //     console.log(res.results);
+    //     console.log("------------------------");
+    //     console.log("\n" + res.results[0].original_title + "\n");
+    //     console.log("RELEASE DATE: " + res.results[0].release_date);
+    //     console.log("RATING: " + res.results[0].vote_average);
+    //     console.log("PLOT SUMMARY: " + res.results[0].overview);
+    //     // console.log(JSON.stringify(res, null, 2));
+    // });
+
+    // the shining id is 694
+    movieDb.movieSimilar({ query: "the shining" + 694 }, function(err, data) {
 
         console.log("------------------------");
-        console.log("\n" + res.results[0].original_title + "\n");
-        console.log("RELEASE DATE: " + res.results[0].release_date);
-        console.log("RATING: " + res.results[0].vote_average);
-        console.log("PLOT SUMMARY: " + res.results[0].overview);
+        console.log(data);
         // console.log(JSON.stringify(res, null, 2));
     });
 
