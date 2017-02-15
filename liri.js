@@ -12,28 +12,33 @@
 //COMMENT CODE ********************************************************
 //COMMENT CODE ********************************************************
 
-// var twitterObj = require("./keys.js");
-// var Twitter = require('twitter');
-// console.log("\n----------------------------------------");
-// var twitterCreds = twitterObj.twitterKeys;
 
-// var client = new Twitter(twitterCreds);
+var argumentTwo = process.argv[2];
+var argumentThree = process.argv[3];
 
-// var recentTweets = process.argv[2];
-// var params = { screen_name: 'jwin4740' };
-// client.get('statuses/user_timeline', params, function(error, tweets, response) {
-//     if (!error) {
-//     	var numTweets = tweets[0].user.statuses_count;
-//         if (recentTweets === "my-tweets") {
-//             for (var i = 0; i < numTweets; i++) {
-//                 console.log("Tweet " + i + ": " + tweets[i].text);
-//             }
-//         } else {
-//             console.log("please use the argument 'my-tweets'");
-//         }
+if (argumentTwo === "my-tweets") {
 
-//     }
-// });
+    var twitterObj = require("./keys.js");
+    var Twitter = require('twitter');
+    console.log("\n----------------------------------------");
+    console.log("hello world");
+    var twitterCreds = twitterObj.twitterKeys;
+
+    var client = new Twitter(twitterCreds);
+
+    var recentTweets = process.argv[2];
+    var params = { screen_name: 'jwin4740' };
+    client.get('statuses/user_timeline', params, function(error, tweets, response) {
+        console.log(response);
+        if (!error) {
+            var numTweets = tweets[0].user.statuses_count;
+            console.log(response);
+            for (var i = 0; i < numTweets; i++) {
+                console.log("Tweet " + i + ": " + tweets[i].text);
+            }
+        }
+    });
+}
 
 // * This will show the following information about the song in your terminal/bash window
 //     * Artist(s)
@@ -43,14 +48,15 @@
 
 // * if no song is provided then your program will default to
 //     * "The Sign" by Ace of Base
-spotifyCommand();
+if (argumentTwo === "spotify-this-song") {
+    spotifyCommand();
+}
 
 function spotifyCommand() {
     var spotify = require('spotify');
     var song = process.argv[3];
-    if (process.argv[3] === null)
-    {
-    	song = "the sign ace of base";
+    if (process.argv[3] === null) {
+        song = "the sign ace of base";
     }
 
     spotify.search({ type: 'track', query: song }, function(err, data) {
@@ -63,7 +69,7 @@ function spotifyCommand() {
             console.log("ARTIST NAME: " + data.tracks.items[0].album.artists[0].name);
             console.log("SONG NAME: " + data.tracks.items[0].name);
             console.log("SONG PREVIEW URL: " + data.tracks.items[0].preview_url);
-                  console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
+            console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
 
             // console.log(data.tracks.items[0].artists.external_urls);
             // console.log(data.tracks.items[0].artists);
@@ -159,18 +165,25 @@ function spotifyCommand() {
 // });
 
 // fs is an NPM package for reading and writing files
-// var fs = require("fs");
-
-// // This block of code will read from the "movies.txt" file.
-// // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
-// // The code will store the contents of the reading inside the variable "data"
-// fs.readFile("random.txt", "utf8", function(error, data) {
-//     // the first parameter is always an error which gets sets to null if there is no error
-//     // We will then print the contents of data
-//     console.log(data);
-
-//     // Then split it by commas (to make it more readable)
+if (argumentThree === "do-what-it-says") {
+    readRandom();
+}
 
 
-//     // We will then re-display the content as an array for later use.
-// });
+function readRandom() {
+    var fs = require("fs");
+
+    // This block of code will read from the "movies.txt" file.
+    // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
+    // The code will store the contents of the reading inside the variable "data"
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        // the first parameter is always an error which gets sets to null if there is no error
+        // We will then print the contents of data
+        console.log(data);
+
+        // Then split it by commas (to make it more readable)
+
+
+        // We will then re-display the content as an array for later use.
+    });
+}
