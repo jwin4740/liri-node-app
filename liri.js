@@ -21,7 +21,7 @@ if (argumentTwo === "my-tweets") {
     var twitterObj = require("./keys.js");
     var Twitter = require('twitter');
     console.log("\n\n");
-   
+
 
     var twitterCreds = twitterObj.twitterKeys;
 
@@ -87,22 +87,41 @@ if (argumentTwo === "spotify-this-song") {
 function spotifyCommand(song) {
     var spotify = require('spotify');
 
-    spotify.search({ type: 'track', query: song }, function(err, data) {
-        if (err) {
-            console.log('Error occurred: ' + err);
-            return;
-        } else {
 
-            console.log("---------------------------------");
-            console.log("ARTIST NAME: " + data.tracks.items[0].album.artists[0].name);
-            console.log("SONG NAME: " + data.tracks.items[0].name);
-            console.log("SONG PREVIEW URL: " + data.tracks.items[0].preview_url);
-            console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
+    // if (song != null) {
+    //     spotify.search({ type: 'track', query: song }, function(err, data) {
+    //         if (err) {
+    //             console.log('Error occurred: ' + err);
+    //             return;
+    //         } else {
+    //             console.log(data.tracks);
+    //             console.log("---------------------------------");
+    //             console.log("ARTIST NAME: " + data.tracks.items[0].album.artists[0].name);
+    //             console.log("SONG NAME: " + data.tracks.items[0].name);
+    //             console.log("SONG PREVIEW URL: " + data.tracks.items[0].preview_url);
+    //             console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
+    //             console.log(data.tracks.items[0].artists);
 
-            // console.log(data.tracks.items[0].artists.external_urls);
-            // console.log(data.tracks.items[0].artists);
-        }
-    });
+    //         }
+    //     });
+    // }
+
+
+    if (2 === 2) {
+        spotify.lookup({ type: 'track', id: "0hrBpAOgrt8RXigk83LLNE" }, function(err, data) {
+            if (err) {
+                console.log('Error occurred: ' + err);
+                return;
+            } else {
+
+                console.log("\nSONG NAME: " + data.name);
+                console.log("ALBUM: " + data.album.name);
+                console.log("ARTIST: " + data.artists[0].name);
+                console.log("SONG PREVIEW URL: " + data.preview_url);
+
+            }
+        });
+    }
 }
 
 // node liri.js movie-this '<movie name here>'
