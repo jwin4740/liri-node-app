@@ -39,6 +39,33 @@ if (argumentTwo === "my-tweets") {
         }
     });
 }
+if (argumentTwo === "do-what-it-says") {
+    readRandom();
+}
+
+
+function readRandom() {
+    var fs = require("fs");
+
+    // This block of code will read from the "movies.txt" file.
+    // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
+    // The code will store the contents of the reading inside the variable "data"
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        // the first parameter is always an error which gets sets to null if there is no error
+        // We will then print the contents of data
+        
+
+        // Then split it by commas (to make it more readable)
+        var dataArr = data.split(",");
+
+        // We will then re-display the content as an array for later use.
+        var randNum = Math.floor(Math.random()*10 + 1);
+        var randSong = dataArr[randNum];
+        spotifyCommand(randSong);
+
+        // We will then re-display the content as an array for later use.
+    });
+}
 
 // * This will show the following information about the song in your terminal/bash window
 //     * Artist(s)
@@ -49,15 +76,12 @@ if (argumentTwo === "my-tweets") {
 // * if no song is provided then your program will default to
 //     * "The Sign" by Ace of Base
 if (argumentTwo === "spotify-this-song") {
-    spotifyCommand();
+    var song = process.argv[3];
+    spotifyCommand(song);
 }
 
-function spotifyCommand() {
+function spotifyCommand(song) {
     var spotify = require('spotify');
-    var song = process.argv[3];
-    if (process.argv[3] === null) {
-        song = "the sign ace of base";
-    }
 
     spotify.search({ type: 'track', query: song }, function(err, data) {
         if (err) {
@@ -165,25 +189,3 @@ function spotifyCommand() {
 // });
 
 // fs is an NPM package for reading and writing files
-if (argumentThree === "do-what-it-says") {
-    readRandom();
-}
-
-
-function readRandom() {
-    var fs = require("fs");
-
-    // This block of code will read from the "movies.txt" file.
-    // It's important to include the "utf8" parameter or the code will provide stream data (garbage)
-    // The code will store the contents of the reading inside the variable "data"
-    fs.readFile("random.txt", "utf8", function(error, data) {
-        // the first parameter is always an error which gets sets to null if there is no error
-        // We will then print the contents of data
-        console.log(data);
-
-        // Then split it by commas (to make it more readable)
-
-
-        // We will then re-display the content as an array for later use.
-    });
-}
