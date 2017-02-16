@@ -26,6 +26,7 @@
   "homepage": "https://github.com/jwin4740/liri-node-app#readme",
   "dependencies": {
     "fs": "0.0.1-security",
+    "moment": "^2.17.1",
     "moviedb": "^0.2.7",
     "node-movie": "^2.0.0",
     "omdb": "^0.7.0",

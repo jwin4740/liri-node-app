@@ -41,6 +41,7 @@ function getMyTweets() {
                 console.log("TWEET (" + (i + 1) + "): " + tweets[i].text + "\n(created at " + tweets[i].created_at + ")");
                 console.log("\n------------------------------------------------------------------------------------------------------------\n");
             }
+            recordData(argumentTwo);
         }
     });
 }
@@ -63,7 +64,10 @@ function readRandom() {
         // We will then re-display the content as an array for later use.
         var randNum = Math.floor(Math.random() * 10 + 1);
         var randSong = dataArr[randNum];
-        spotifyCommand(randSong);
+        argumentThree = randSong;
+        
+        spotifyCommand(argumentThree);
+        recordData(argumentTwo);
 
         // We will then re-display the content as an array for later use.
     });
@@ -80,63 +84,60 @@ function readRandom() {
 
 
 function spotifyCommand(song) {
+    var spotify = require('spotify');
     if (argumentThree) {
-        var spotify = require('spotify');
         spotify.search({ type: 'track', query: song }, function(err, data) {
             if (err) {
                 console.log('Error occurred: ' + err);
                 return;
             } else {
-
                 console.log("---------------------------------");
                 console.log("ARTIST NAME: " + data.tracks.items[0].album.artists[0].name);
                 console.log("SONG NAME: " + data.tracks.items[0].name);
                 console.log("SONG PREVIEW URL: " + data.tracks.items[0].preview_url);
                 console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
-
-
             }
         });
     } else {
-        var spotify = require('spotify');
+
         spotify.lookup({ type: 'track', id: "0hrBpAOgrt8RXigk83LLNE" }, function(err, data) {
             if (err) {
                 console.log('Error occurred: ' + err);
                 return;
             } else {
-
                 console.log("\nSONG NAME: " + data.name);
                 console.log("ALBUM: " + data.album.name);
                 console.log("ARTIST: " + data.artists[0].name);
                 console.log("SONG PREVIEW URL: " + data.preview_url);
-
             }
         });
     }
+    recordData(argumentTwo);
 }
 
 
-    // node liri.js movie-this '<movie name here>'
-    // * This will output the following information to your terminal/bash window:
+// node liri.js movie-this '<movie name here>'
+// * This will output the following information to your terminal/bash window:
 
-    //     * Title of the movie.
-    //     * Year the movie came out.
-    //     * IMDB Rating of the movie.
-    //     * Country where the movie was produced.
-    //     * Language of the movie.
-    //     * Plot of the movie.
-    //     * Actors in the movie.
-    //     * Rotten Tomatoes Rating.
-    //     * Rotten Tomatoes URL.
+//     * Title of the movie.
+//     * Year the movie came out.
+//     * IMDB Rating of the movie.
+//     * Country where the movie was produced.
+//     * Language of the movie.
+//     * Plot of the movie.
+//     * Actors in the movie.
+//     * Rotten Tomatoes Rating.
+//     * Rotten Tomatoes URL.
 
-    // * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-    //     * If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
-    //     * It's on Netflix!
+// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+//     * If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
+//     * It's on Netflix!
 
 
-    function getMovieInfo(movie) {
+function getMovieInfo(movie) {
 
-        var movieDb = require('moviedb')('e2ed728c3fe73289f9fa629969bcf3a1');
+    var movieDb = require('moviedb')('e2ed728c3fe73289f9fa629969bcf3a1');
+    if (argumentThree) {
         movieDb.searchMovie({ query: movie }, function(err, res) {
             if (err) {
                 console.log(err);
@@ -148,37 +149,56 @@ function spotifyCommand(song) {
                 console.log("PLOT SUMMARY: " + res.results[0].overview);
             }
         });
-    }
-
-
-
-
-    // we grab the fs package to handle append functionality
-    var fs = require("fs");
-
-    // We then store the textfile filename given to us from the command line
-
-    function recordData(command, data) {
-        // We then append the contents "Hello Kitty" into the file
-        // If the file didn't exist then it gets created on the fly.
-        fs.appendFile("log.txt", command + data, function(err) {
-
-            // If an error was experienced we say it.
+    } else {
+        movieDb.searchMovie({ query: "Mr. Nobody" }, function(err, res) {
             if (err) {
                 console.log(err);
-            }
-
-            // If no error is experienced, we'll log the phrase "Content Added" to our node console.
-            else {
-                console.log("Content Added!");
+            } else {
+                console.log("------------------------");
+                console.log("\nMOVIE TITLE: " + res.results[0].original_title);
+                console.log("RELEASE DATE: " + res.results[0].release_date);
+                console.log("RATING: " + res.results[0].vote_average);
+                console.log("PLOT SUMMARY: " + res.results[0].overview);
             }
         });
+
     }
+    recordData(argumentTwo);
+}
 
-    // error fires if invalid command
-    function fireError() {
-        if (argumentTwo != "my-tweets" || argumentTwo != "spotify-this-song" || argumentTwo != "movie-this" || argumentTwo != "do-what-it-says") {
-            console.log("ERROR: INVALID COMMAND\n\nPlease choose one of the following commands:\n1) 'my-tweets'\n2) 'spotify-this-song'\n3) 'movie-this'\n4) 'do-what-it-says'");
 
+
+
+// we grab the fs package to handle append functionality
+
+
+// We then store the textfile filename given to us from the command line
+
+function recordData(command) {
+    var moment = require('moment');
+    var fs = require("fs");
+    var time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+    // We then append the contents "Hello Kitty" into the file
+    // If the file didn't exist then it gets created on the fly.
+    fs.appendFile("log.txt", "COMMAND: " + command + "\nTIMESTAMP: " + time + "\n\n", function(err) {
+
+        // If an error was experienced we say it.
+        if (err) {
+            console.log(err);
         }
+
+        // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+        else {
+            console.log("Content Added!");
+        }
+    });
+}
+
+// error fires if invalid command
+function fireError() {
+    if (argumentTwo != "my-tweets" || argumentTwo != "spotify-this-song" || argumentTwo != "movie-this" || argumentTwo != "do-what-it-says") {
+        console.log("ERROR: INVALID COMMAND\n\nPlease choose one of the following commands:\n1) 'my-tweets'\n2) 'spotify-this-song'\n3) 'movie-this'\n4) 'do-what-it-says'");
+
     }
+    recordData("Error fired");
+}
