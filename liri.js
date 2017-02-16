@@ -1,11 +1,10 @@
-//COMMENT CODE ********************************************************
-//COMMENT CODE ********************************************************
-//COMMENT CODE ********************************************************
-//COMMENT CODE ********************************************************
-
-
+// takes user arguments and stores them in variables
 var argumentTwo = process.argv[2];
 var argumentThree = process.argv[3];
+
+
+// switch statement is used to run the appropriate function based on user input
+// if user input is incorrect an error will be fired to the console
 switch (argumentTwo) {
     case 'my-tweets':
         getMyTweets();
@@ -23,10 +22,10 @@ switch (argumentTwo) {
         break;
     default:
         fireError();
-
 }
 
-
+// grabs the authentication information from the keys.js file and call the twitter api
+// to retrieve my 20 most recent tweets
 function getMyTweets() {
     var twitterObj = require("./keys.js");
     var Twitter = require('twitter');
@@ -36,52 +35,36 @@ function getMyTweets() {
     console.log("\n\n");
     var params = { screen_name: 'jwin4740' };
     user.get('statuses/user_timeline', params, function(error, tweets, response) {
+
+        // if no error occurs a for loop will console log each tweet
         if (!error) {
             for (var i = 19; i >= 0; i--) {
                 console.log("TWEET (" + (i + 1) + "): " + tweets[i].text + "\n(created at " + tweets[i].created_at + ")");
                 console.log("\n------------------------------------------------------------------------------------------------------------\n");
             }
-            recordData(argumentTwo);
+
+            // call the function which logs the command and timestamp to log.txt file
+            recordData(argumentTwo, " ");
         }
     });
 }
 
 
-
+// This block of code will read from the "random.txt" file.
+// The code will store the contents of the reading inside the variable "data"
 function readRandom() {
     var fs = require("fs");
-
-    // This block of code will read from the "movies.txt" file.
-    // The code will store the contents of the reading inside the variable "data"
     fs.readFile("random.txt", "utf8", function(error, data) {
         // the first parameter is always an error which gets sets to null if there is no error
-        // We will then print the contents of data
 
-
-        // Then split it by commas (to make it more readable)
         var dataArr = data.split(",");
-
-        // We will then re-display the content as an array for later use.
         var randNum = Math.floor(Math.random() * 10 + 1);
         var randSong = dataArr[randNum];
         argumentThree = randSong;
-        
-        spotifyCommand(argumentThree);
-        recordData(argumentTwo);
 
-        // We will then re-display the content as an array for later use.
+        spotifyCommand(argumentThree); // calls the spotify-this-song function with the random song
     });
 }
-
-// * This will show the following information about the song in your terminal/bash window
-//     * Artist(s)
-//     * The song's name
-//     * A preview link of the song from Spotify
-//     * The album that the song is from
-
-// * if no song is provided then your program will default to
-//     * "The Sign" by Ace of Base
-
 
 function spotifyCommand(song) {
     var spotify = require('spotify');
@@ -98,7 +81,10 @@ function spotifyCommand(song) {
                 console.log("ALBUM NAME: " + data.tracks.items[0].album.name);
             }
         });
-    } else {
+    }
+
+    // If the user doesn't type a song in, "The Sign by Ace of Base" is returned to console
+    else {
 
         spotify.lookup({ type: 'track', id: "0hrBpAOgrt8RXigk83LLNE" }, function(err, data) {
             if (err) {
@@ -112,26 +98,13 @@ function spotifyCommand(song) {
             }
         });
     }
-    recordData(argumentTwo);
+    if (argumentThree) {
+        recordData(argumentTwo, argumentThree);
+    } else {
+        recordData(argumentTwo, "The Sign by Ace of Base");
+    }
+
 }
-
-
-// node liri.js movie-this '<movie name here>'
-// * This will output the following information to your terminal/bash window:
-
-//     * Title of the movie.
-//     * Year the movie came out.
-//     * IMDB Rating of the movie.
-//     * Country where the movie was produced.
-//     * Language of the movie.
-//     * Plot of the movie.
-//     * Actors in the movie.
-//     * Rotten Tomatoes Rating.
-//     * Rotten Tomatoes URL.
-
-// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-//     * If you haven't watched "Mr. Nobody," then you should: http://www.imdb.com/title/tt0485947/
-//     * It's on Netflix!
 
 
 function getMovieInfo(movie) {
@@ -149,7 +122,9 @@ function getMovieInfo(movie) {
                 console.log("PLOT SUMMARY: " + res.results[0].overview);
             }
         });
-    } else {
+    }
+    // If the user doesn't type a movie in, "Mr. Nobody" info is returned to console
+    else {
         movieDb.searchMovie({ query: "Mr. Nobody" }, function(err, res) {
             if (err) {
                 console.log(err);
@@ -163,38 +138,36 @@ function getMovieInfo(movie) {
         });
 
     }
-    recordData(argumentTwo);
+    if (argumentThree) {
+        recordData(argumentTwo, argumentThree);
+    } else {
+        recordData(argumentTwo, "Mr. Nobody");
+    }
 }
 
 
-
-
-// we grab the fs package to handle append functionality
-
-
-// We then store the textfile filename given to us from the command line
-
-function recordData(command) {
+// function records commands and timestamp to log.txt file
+function recordData(argumentTwo, argumentThree) {
     var moment = require('moment');
     var fs = require("fs");
     var time = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
-    // We then append the contents "Hello Kitty" into the file
-    // If the file didn't exist then it gets created on the fly.
-    fs.appendFile("log.txt", "COMMAND: " + command + "\nTIMESTAMP: " + time + "\n\n", function(err) {
 
-        // If an error was experienced we say it.
+    // We then append the command ran and timestamp into the log.txt file
+    fs.appendFile("log.txt", "COMMAND: " + argumentTwo + " " + argumentThree + "\nTIMESTAMP: " + time + "\n\n", function(err) {
+
+        // If an error was experienced we console log it.
         if (err) {
             console.log(err);
         }
 
-        // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+        // If no error is experienced, we'll log the phrase "Content Added to log.txt" to our node console.
         else {
-            console.log("Content Added!");
+            console.log("Content Added to log.txt!");
         }
     });
 }
 
-// error fires if invalid command
+// error fires if invalid command prompting user to use one of the four methods with correct syntax
 function fireError() {
     if (argumentTwo != "my-tweets" || argumentTwo != "spotify-this-song" || argumentTwo != "movie-this" || argumentTwo != "do-what-it-says") {
         console.log("ERROR: INVALID COMMAND\n\nPlease choose one of the following commands:\n1) 'my-tweets'\n2) 'spotify-this-song'\n3) 'movie-this'\n4) 'do-what-it-says'");
