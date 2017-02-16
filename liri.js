@@ -1,11 +1,3 @@
-// * `my-tweets`
-
-// * `spotify-this-song`
-
-// * `movie-this`
-
-// * `do-what-it-says`
-
 
 //COMMENT CODE ********************************************************
 //COMMENT CODE ********************************************************
@@ -30,14 +22,12 @@ if (argumentTwo === "my-tweets") {
     var recentTweets = argumentTwo;
     var params = { screen_name: 'jwin4740' };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
-        // console.log(tweets);
-        // console.log(JSON.stringify(response));
         if (!error) {
             var numTweets = tweets[0].user.statuses_count;
 
             for (var i = 19; i >= 0; i--) {
                 console.log("TWEET: " + tweets[i].text + "\n(created at " + tweets[i].created_at + ")");
-                console.log("------------------------------------------------------------------------------------------------------------\n");
+                console.log("\n------------------------------------------------------------------------------------------------------------\n");
 
             }
         }
